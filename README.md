@@ -12,7 +12,7 @@ This component provides a very simple abstraction that works on React (DOM), Rea
 
 ## Usage
 
-`npm i --save react-intl-formatted-duration`
+`yarn add @codemix/react-intl-formatted-duration`
 
 ### Extended format
 
@@ -37,7 +37,7 @@ It's not necessary to use styled components, you can use any component you like 
 ```js
 // Using React Native
 import React from 'react';
-import FormattedDuration from 'react-intl-formatted-duration';
+import FormattedDuration from '@codemix/react-intl-formatted-duration';
 
 import { Text } from 'react-native';
 
