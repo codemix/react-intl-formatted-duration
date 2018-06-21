@@ -1,5 +1,9 @@
 # Formatted Duration
 
+> Note: Hopefully temporary fork from https://github.com/en-japan-air/react-intl-formatted-duration until [this PR](https://github.com/en-japan-air/react-intl-formatted-duration/pull/10) lands.
+
+---
+
 [react-intl](https://github.com/yahoo/react-intl) is an amazing library providing React components and API to localize your application, however it lacks a `Duration` component.
 
 If you want to show the time it takes to do something like `1 minute` or `5 minutes` or even a simple timer `0:30` you're [out of luck](https://github.com/yahoo/react-intl/issues/77) because the ECMA committee hasn't specified the [DurationFormat](https://github.com/tc39/ecma402/issues/47) yet.
@@ -15,7 +19,7 @@ This component provides a very simple abstraction that works on React (DOM), Rea
 ```js
 // Using React DOM
 import React from 'react';
-import FormattedDuration from 'react-intl-formatted-duration';
+import FormattedDuration from '@codemix/react-intl-formatted-duration';
 
 import styled from 'styled-components';
 const Text = styled.span``;
@@ -149,18 +153,22 @@ The first argument of those two functions is an `intl` instance from react-intl.
 `formatDuration` works exactly like FormattedDuration but returns the formatted duration as a string.
 
 ```js
-import { formatDuration, TIMER_FORMAT } from 'react-intl-formatted-duration';
+import { formatDuration, TIMER_FORMAT } from "react-intl-formatted-duration";
 
-const formatted = formatDuration(intl, /* seconds = */ 60, { format: TIMER_FORMAT });
+const formatted = formatDuration(intl, /* seconds = */ 60, {
+  format: TIMER_FORMAT
+});
 // returns '1:00'
 ```
 
 `formatDurationToParts` works like `formatDurationToParts` but returns the formatted duration as an array of tokens. Similar to what [DateTimeFormat#formatToParts](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat/formatToParts) produces
 
 ```js
-import { formatDuration, TIMER_FORMAT } from 'react-intl-formatted-duration';
+import { formatDuration, TIMER_FORMAT } from "react-intl-formatted-duration";
 
-const formatted = formatDuration(intl, /* seconds = */ 60, { format: TIMER_FORMAT });
+const formatted = formatDuration(intl, /* seconds = */ 60, {
+  format: TIMER_FORMAT
+});
 // returns [
 //   { type: 'minutes', value: '1' },
 //   { type: 'literal', value: ':' },
@@ -168,23 +176,21 @@ const formatted = formatDuration(intl, /* seconds = */ 60, { format: TIMER_FORMA
 // ]
 ```
 
-
 ## Localization
 
 `react-intl-formatted-duration` expects the following keys inside your translation file
 
-* `react-intl-formatted-duration.longFormatting` the default format that generates something like `1 minute 30 seconds`. It uses the values `{days}`, `{hours}`, `{minutes}` and `{seconds}`. For example you can change it to `{minutes} and {seconds}`.
-* `react-intl-formatted-duration.duration` the format used by the `minutes` and `seconds` variables described above. It uses the values `{value}` and `{unit}`. The default is `{value} {unit}` where `value` is a number and `{unit}` is the textual unit like `minute(s)` or `second(s)`.
-* `react-intl-formatted-duration.timerFormatting` format for `TIMER_FORMAT`, defaults to `{minutes}:{seconds}` where both values are numbers padded to have a minimum length of 2 characters
-* `react-intl-formatted-duration.daysUnit` string for formatting days, default `{value, plural, one {# day} other {# days}}`
-* `react-intl-formatted-duration.hoursUnit` string for formatting hours, default `{value, plural, one {# hour} other {# hours}}`
-* `react-intl-formatted-duration.minutesUnit` string for formatting minutes, default `{value, plural, one {# minute} other {# minutes}}`
-* `react-intl-formatted-duration.secondsUnit` string for formatting seconds, default `{value, plural, one {# second} other {# seconds}}`
+- `react-intl-formatted-duration.longFormatting` the default format that generates something like `1 minute 30 seconds`. It uses the values `{days}`, `{hours}`, `{minutes}` and `{seconds}`. For example you can change it to `{minutes} and {seconds}`.
+- `react-intl-formatted-duration.duration` the format used by the `minutes` and `seconds` variables described above. It uses the values `{value}` and `{unit}`. The default is `{value} {unit}` where `value` is a number and `{unit}` is the textual unit like `minute(s)` or `second(s)`.
+- `react-intl-formatted-duration.timerFormatting` format for `TIMER_FORMAT`, defaults to `{minutes}:{seconds}` where both values are numbers padded to have a minimum length of 2 characters
+- `react-intl-formatted-duration.daysUnit` string for formatting days, default `{value, plural, one {# day} other {# days}}`
+- `react-intl-formatted-duration.hoursUnit` string for formatting hours, default `{value, plural, one {# hour} other {# hours}}`
+- `react-intl-formatted-duration.minutesUnit` string for formatting minutes, default `{value, plural, one {# minute} other {# minutes}}`
+- `react-intl-formatted-duration.secondsUnit` string for formatting seconds, default `{value, plural, one {# second} other {# seconds}}`
 
 The messages for `daysUnit`, `hoursUnit`, `minutesUnit`, `secondsUnit` use the [format-js syntax](https://formatjs.io/guides/message-syntax/).
 
 If you're using the `extract-intl` script from [react-boilerplate](https://github.com/react-boilerplate/react-boilerplate) you can import `react-intl-formatted-duration/messages` to automatically generate the keys in your translation files.
-
 
 ## Upgrading from version 1.0
 

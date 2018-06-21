@@ -1,8 +1,17 @@
+// @flow
+import type { IntlShape, MessageDescriptor } from "react-intl";
+
 /**
  * KEY_LITERAL is a symbol used as type for "literal" tokens.
  * It is a Symbol because "type" contains the name of the variable and could collide if it is a string.
  */
-export const KEY_LITERAL = typeof Symbol === 'function' ? Symbol('literal') : '@@literal@@';
+export const KEY_LITERAL =
+  typeof Symbol === "function" ? Symbol("literal") : "@@literal@@";
+
+export type MessagePart = {
+  type: string | typeof KEY_LITERAL,
+  value: string
+};
 
 /**
  * Like intl.formatMessage but returns an array of token split at the variables.
@@ -11,17 +20,23 @@ export const KEY_LITERAL = typeof Symbol === 'function' ? Symbol('literal') : '@
  *
  * @returns Array
  */
-export function formatMessageToParts(intl, message, values) {
-
+export function formatMessageToParts(
+  intl: IntlShape,
+  message: MessageDescriptor,
+  values?: Object
+): MessagePart[] {
   // Note: Since both react-intl and we need a method like this, and has many many other use cases
   // it'd be awesome if react-intl provided an intl.formatMessageToParts() natively instead of having this hack. (through https://github.com/yahoo/intl-messageformat)
 
-  const hasValues = values && Object.keys(values).length > 0;
-  if (!hasValues) {
-    return [{
-      type: 'literal',
-      value: intl.formatMessage(message, values),
-    }];
+  const keys = values != null ? Object.keys(values) : [];
+
+  if (values == null || keys.length === 0) {
+    return [
+      {
+        type: "literal",
+        value: intl.formatMessage(message, values)
+      }
+    ];
   }
 
   // Creates a token with a random UID that should not be guessable or
@@ -29,10 +44,10 @@ export function formatMessageToParts(intl, message, values) {
   const uid = Math.floor(Math.random() * 0x10000000000).toString(16);
 
   // Replace values variables with our tokens so we know where to inject the variables afterwards
-  const tokenizedValues = {};
-  Object.keys(values).forEach(name => {
-    tokenizedValues[name] = `@__TOKEN-${uid}-${name}__@`;
-  });
+  const tokenizedValues = keys.reduce((tokenized, name) => {
+    tokenized[name] = `@__TOKEN-${uid}-${name}__@`;
+    return tokenized;
+  }, {});
 
   const formattedMessage = intl.formatMessage(message, tokenizedValues);
 
@@ -49,13 +64,13 @@ export function formatMessageToParts(intl, message, values) {
       // no token left, add everything else as literal
       nodes.push({
         type: KEY_LITERAL,
-        value: str,
+        value: str
       });
 
       break;
     }
 
-    const matchStart = match.index;
+    const matchStart: number = (match: $FlowFixMe).index;
     const matchLength = match[0].length;
     if (matchStart !== 0) {
       // add all chars before the matched token as a literal node
@@ -63,7 +78,7 @@ export function formatMessageToParts(intl, message, values) {
 
       nodes.push({
         type: KEY_LITERAL,
-        value: strStart,
+        value: strStart
       });
     }
 
@@ -71,7 +86,7 @@ export function formatMessageToParts(intl, message, values) {
     const valueKey = match[1];
     nodes.push({
       type: valueKey,
-      value: values[valueKey],
+      value: values[valueKey]
     });
 
     // remove all chars that have been added to `nodes` during this iteration
