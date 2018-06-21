@@ -27,10 +27,10 @@
     "posttest": "npm run lint"
   },
   "devDependencies": {
-    "babel-preset-flow": "^6.23.0",
     "babel-eslint": "^8.2.3",
     "babel-jest": "^23.0.1",
     "babel-preset-env": "^1.7.0",
+    "babel-preset-flow": "^6.23.0",
     "babel-preset-react": "^6.24.1",
     "codecov": "^3.0.2",
     "enzyme": "^3.3.0",

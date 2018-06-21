@@ -82,7 +82,9 @@ export function formatDurationToParts(
   }
 
   const message =
-    intl.messages[formattingMessage.id] || formattingMessage.defaultMessage;
+    intl.messages[formattingMessage.id] ||
+    formattingMessage.defaultMessage ||
+    "";
   const hasSeconds = message.indexOf("{seconds}") !== -1;
   const hasHours = message.indexOf("{hours}") !== -1;
   const hasDays = message.indexOf("{days}") !== -1;
